@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repositorio Digital de Lógica | Ingeniería en Sistemas</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Variables del Sistema - Paleta Académica y Seria */
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2b6cb0;
+            --secondary: #2d3748;
+            --accent: #3182ce;
+            --bg-light: #f7fafc;
+            --bg-card: #ffffff;
+            --text-dark: #1a202c;
+            --text-muted: #4a5568;
+            --border: #e2e8f0;
+            --success: #2f855a;
+            --danger: #9b2c2c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* Barra de Navegación */
+        nav {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .nav-brand {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            background: var(--primary-light);
+        }
+
+        /* Contenedores Principales */
+        main {
+            margin-top: 60px;
+        }
+
+        section {
+            padding: 80px 10% 60px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2.section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h2.section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            margin-top: 0.5rem;
+        }
+
+        /* Parte 0: Portada Principal */
+        .hero {
+            background: linear-gradient(rgba(26, 54, 93, 0.9), rgba(45, 55, 72, 0.95)), 
+                        url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80') center/cover;
+            color: white;
+            text-align: center;
+            padding: 140px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero h3 {
+            font-size: 1.6rem;
+            color: #cbd5e0;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            color: #a0aec0;
+        }
+
+        /* Parte 1: Introducción */
+        .intro-text {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            text-align: justify;
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary);
+        }
+
+        /* Parte 2: Quiénes Somos */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 2rem;
+        }
+
+        .member-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: transform 0.3s ease;
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+        }
+
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--border);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 15px;
+            overflow: hidden;
+        }
+
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-card h4 {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .member-card span {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Parte 3: Módulos */
+        .modules-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .module-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border-left: 6px solid var(--primary);
+            position: relative;
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .module-title {
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        .module-content {
+            color: var(--text-muted);
+            text-align: justify;
+            white-space: pre-line;
+        }
+
+        /* Parte 4: Trabajo de Campo */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item {
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .gallery-img-container {
+            width: 100%;
+            height: 220px;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .gallery-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-img-placeholder {
+            font-size: 3rem;
+            color: var(--text-muted);
+        }
+
+        .gallery-info {
+            padding: 15px;
+        }
+
+        .gallery-info h4 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .gallery-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Parte 5: Mediateca con Visualizadores Internos */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+        }
+
+        .media-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .media-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .media-icon {
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+
+        .media-viewer-box {
+            width: 100%;
+            height: 200px;
+            background: #edf2f7;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+        }
+
+        .media-viewer-box iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .media-viewer-placeholder {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .media-viewer-placeholder i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+            color: var(--text-muted);
+        }
+
+        .media-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Parte 6: Conclusiones */
+        .conclusions-box {
+            background: var(--secondary);
+            color: white;
+            padding: 35px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .conclusion-block {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .conclusion-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .conclusions-box h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 8px;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+        }
+
+        .conclusions-box p {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+
+        /* Parte 7: Story Time */
+        .stories-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .story-item {
+            background: var(--bg-card);
+            border-left: 4px solid var(--primary-light);
+            padding: 20px;
+            border-radius: 0 6px 6px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        .story-item p {
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .story-item strong {
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        /* Botones del Sistema */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-light); }
+        .btn-secondary { background: #e2e8f0; color: var(--text-dark); }
+        .btn-secondary:hover { background: #cbd5e0; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        
+        .btn-crud {
+            padding: 4px 8px;
+            font-size: 0.75rem;
+        }
+
+        .admin-actions-zone {
+            display: none; /* Controlado dinámicamente si está logueado */
+            gap: 5px;
+            margin-top: 10px;
+            justify-content: flex-end;
+        }
+
+        .conclusions-box .admin-actions-zone {
+            justify-content: flex-start;
+            margin-top: 5px;
+        }
+
+        /* Botón Flotante Admin */
+        .btn-admin-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1005;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            padding: 12px 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 0.9rem;
+        }
+
+        /* Modales de Gestión (Login y Formularios) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            overflow: hidden;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            background: #fff;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            background: #f7fafc;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pie de Página */
+        footer {
+            background: var(--primary);
+            color: #cbd5e0;
+            text-align: center;
+            padding: 2rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-brand"><i class="fas fa-brain"></i> LOGIC-REPO</div>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#introducion">Introducción</a></li>
+            <li><a href="#autores">Nosotros</a></li>
+            <li><a href="#modulos">Módulos</a></li>
+            <li><a href="#campo">Campo</a></li>
+            <li><a href="#mediateca">Mediateca</a></li>
+            <li><a href="#conclusiones">Conclusiones</a></li>
+            <li><a href="#stories">Relatos</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header id="inicio" class="hero">
+            <h1>Portafolio Digital de Lógica</h1>
+            <h3>Ingeniería en Informatica - UNELLEZ. Primer Semestre</h3>
+            <p>Sistematización Avanzada de Conceptos, Estructuras Formales y Evidencias de Campo</p>
+        </header>
+
+        <section id="introducion">
+            <div class="container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 class="section-title" style="margin-bottom: 0;">Introducción</h2>
+                </div>
+                <div class="intro-text">
+                    La lógica formal representa el núcleo principal del pensamiento computacional y el diseño de algoritmos en la ingeniería contemporánea. Este portafolio digital tiene el proposito general de funcionar como una bitácora científica y un centro de gestión del conocimiento para organizar, analizar y validar las estructuras proposicionales, métodos deductivos y aplicaciones prácticas desarrolladas a lo largo de este subproyecto universitario. A través de este entorno, se vincula la rigurosidad abstracta de los sistemas formales con evidencias empíricas recolectadas directamente durante el proceso de desarollo y ejecucion, en el campo de estudio.
+                </div>
+            </div>
+        </section>
+
+        <section id="autores">
+            <div class="container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 class="section-title" style="margin-bottom: 0;">Quiénes Somos</h2>
+                    <button class="btn btn-success btn-admin-only" onclick="openCrudModal('team')" style="display: none;">
+                        <i class="fas fa-plus"></i> Añadir Integrante
+                    </button>
+                </div>
+                <p style="margin-bottom: 20px; color: var(--text-muted);">Cuerpo de investigadores y desarrolladores de proyectos de Ingeniería en Sistemas:</p>
+                <div id="team-target" class="team-grid">
+                </div>
+            </div>
+        </section>
+
+        <section id="modulos">
+            <div class="container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 class="section-title" style="margin-bottom: 0;">Módulos de la Materia</h2>
+                    <button class="btn btn-success btn-admin-only" onclick="openCrudModal('modulos')" style="display: none;">
+                        <i class="fas fa-plus"></i> Añadir Módulo
+                    </button>
+                </div>
+                <div id="modules-target" class="modules-container">
+                </div>
+            </div>
+        </section>
+
+        <section id="campo">
+            <div class="container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 class="section-title" style="margin-bottom: 0;">Trabajo de Campo</h2>
+                    <button class="btn btn-success btn-admin-only" onclick="openCrudModal('campo')" style="display: none;">
+                        <i class="fas fa-plus"></i> Añadir Anexo
+                    </button>
+                </div>
+                <div id="campo-target" class="gallery-grid">
+                </div>
+            </div>
+        </section>
+
+        <section id="mediateca">
+            <div class="container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 class="section-title" style="margin-bottom: 0;">Mediateca Académica</h2>
+                    <button class="btn btn-success btn-admin-only" onclick="openCrudModal('mediateca')" style="display: none;">
+                        <i class="fas fa-plus"></i> Añadir Recurso
+                    </button>
+                </div>
+                <div id="mediateca-target" class="media-grid">
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusiones">
+            <div class="container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 class="section-title" style="margin-bottom: 0;">Conclusiones y Recomendaciones</h2>
+                    <button class="btn btn-success btn-admin-only" onclick="openCrudModal('conclusions')" style="display: none;">
+                        <i class="fas fa-plus"></i> Añadir Conclusión
+                    </button>
+                </div>
+                <div id="conclusiones-target" class="conclusions-box">
+                </div>
+            </div>
+        </section>
+
+        <section id="stories">
+            <div class="container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 class="section-title" style="margin-bottom: 0;">Sistematización de Experiencias</h2>
+                    <button class="btn btn-success btn-admin-only" onclick="openCrudModal('stories')" style="display: none;">
+                        <i class="fas fa-plus"></i> Añadir Relato
+                    </button>
+                </div>
+                <div id="stories-target" class="stories-container">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button id="admin-trigger-btn" class="btn btn-admin-float" onclick="toggleAdminView()">
+        <i class="fas fa-lock"></i> Acceso Administrador
+    </button>
+
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fas fa-shield-halved"></i> Autenticación de Control</h3>
+                <button class="modal-close" onclick="closeModal('login-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Usuario Técnico</label>
+                    <input type="text" id="login-user" class="form-control" placeholder="Ingrese usuario">
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="login-pass" class="form-control" placeholder="••••••••">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('login-modal')">Cancelar</button>
+                <button class="btn btn-primary" onclick="submitLogin()">Ingresar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="crud-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="crud-modal-title">Gestión de Elemento</h3>
+                <button class="modal-close" onclick="closeModal('crud-modal')">&times;</button>
+            </div>
+            <form id="crud-form" onsubmit="saveDataItem(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="form-target-section">
+                    <input type="hidden" id="form-item-id">
+                    
+                    <div class="form-group" id="group-title">
+                        <label id="label-title">Título</label>
+                        <input type="text" id="form-title" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group" id="group-type" style="display: none;">
+                        <label>Tipo de Recurso</label>
+                        <select id="form-type" class="form-control">
+                            <option value="pdf">Documento PDF (.pdf)</option>
+                            <option value="video">Video de YouTube (Enlace o Embed)</option>
+                            <option value="ppt">Presentación PowerPoint (.ppt, .pptx)</option>
+                            <option value="docx">Documento Word (.doc, .docx)</option>
+                            <option value="xlsx">Hoja de Cálculo Excel (.xls, .xlsx)</option>
+                            <option value="ofimatica">Otros Archivos Ofimáticos</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="group-url" style="display: none;">
+                        <label id="label-url">URL del Recurso / Enlace de Imagen</label>
+                        <input type="text" id="form-url" class="form-control" placeholder="https://ejemplo.com/archivo">
+                    </div>
+
+                    <div class="form-group" id="group-image-file" style="display: none;">
+                        <label id="label-file-input">Adjuntar Archivo Físico (Ofimática, PDF o Imágenes)</label>
+                        <input type="file" id="form-file-input" class="form-control">
+                    </div>
+
+                    <div class="form-group" id="group-content">
+                        <label id="label-content">Contenido / Descripción</label>
+                        <textarea id="form-content" class="form-control" rows="5" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('crud-modal')">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 - Repositorio de Lógica Aplicada. Todos los derechos reservados.</p>
+        <p>Programa De Ciencias Aplicadas  - UNELLEZ</p>
+    </footer>
+
+    <script>
+        // Estado de Sesión Administrativa
+        let IsAdminAuthenticated = false;
+
+        // Semillas de Datos Iniciales Estructurados
+        const seedTeam = [
+            { id: "t1", title: "Leonardo Moya", url: "", content: "Investigador", icon: "fa-user-gear" },
+            { id: "t2", title: "Luis Melgarejo", url: "", content: "Desarrollador General", icon: "fa-user-code" },
+            { id: "t3", title: "Miguel Gómez", url: "", content: "Investigador", icon: "fa-user-gear" },
+            { id: "t4", title: "Manuel Márquez", url: "", content: "Analista", icon: "fa-user-gear" },
+            { id: "t5", title: "Jenuar Fernández", url: "", content: "Investigador", icon: "fa-user-gear" },
+            { id: "t6", title: "Freidy Meza", url: "", content: "Analista", icon: "fa-user-gear" },
+            { id: "t7", title: "Víctor Conde", url: "", content: "Investigador", icon: "fa-user-gear" }
+        ];
+
+        const seedModules = [
+            { id: "m1", title: "MODULO I: INTRODUCCION A LA LOGICA", content: "Abstracción y delimitación del conocimiento lógico. Estudio formal de las proposiciones gramaticales, diferenciación exhaustiva entre razonamientos inductivos y deductivos, correspondencia analítica entre la validez formal y la verdad material. Introducción a las falacias lógicas informales y bases teóricas de la deducción clásica." },
+            { id: "m2", title: "MODULO II: LOGICA PROPOSICIONAL", content: "Estructuración simbólica del lenguaje formal. Clasificación analítica de proposiciones atómicas y moleculares, aplicación de conectores lógicos (negación, conjunción, disyunción inclusiva/exclusiva, condicional y bicondicional). Construcción e interpretación algorítmica de Tablas de Verdad para la determinación de Tautologías, Contradicciones y Contingencias." },
+            { id: "m3", title: "MODULO III: SISTEMA DE DEDUCCION NATURAL", content: "Estudio dinámico de la demostración formal indirecta y directa. Implementación sistémica de las Reglas de Inferencia fundamentales: Modus Ponendo Ponens (MPP), Modus Tollendo Tollens (MTT), Silogismo Hipotético (SH), Silogismo Disyuntivo (SD), Adición, Conjunción y Simplificación para la validación de argumentos estructurados." },
+            { id: "m4", title: "MODULO IV: LOGICA DE PREDICADO", content: "Descomposición interna de proposiciones complejas. Introducción de términos, predicados y la aplicación avanzada de cuantificadores existenciales (∃) y universales (∀). Formalización axiomática de argumentos que superan los alcances restrictivos de la lógica proposicional estándar." }
+        ];
+
+        const seedCampo = [
+            { id: "c1", title: "Sistematización en Tablero", url: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=600&q=80", content: "Evidencia de la modelación de grafos sintácticos y esquemas de árboles deductivos validados en el laboratorio." },
+            { id: "c2", title: "Mesas de Resolución Cooperativa", url: "https://images.unsplash.com/photo-1531497865144-0464ef8fb9a9?auto=format&fit=crop&w=600&q=80", content: "Sesión técnica grupal enfocada en el diseño mecánico de tablas de verdad analizadas en el trabajo de campo." }
+        ];
+
+        const seedMediateca = [
+            { id: "med1", title: "Guía Completa de Tablas de Verdad", type: "pdf", url: "https://es.scribd.com/document/353015816/Ejercicios-de-Simplificacion-de-Ecuaciones-Logicas-1", content: "Simplificación de Proposiciones." },
+            { id: "med2", title: "Video Tutorial de Reglas de Inferencia", type: "video", url: "https://www.youtube.com/watch?v=vKe0UKSpNQQ&list=PLeySRPnY35dHBYcVHPisjBCVHBa954rMZ", content: "Video explicativo sobre la Lógica Proposicional." },
+            { id: "med3", title: "Reglas de Inferencia Lógicas", type: "ppt", url: "https://es.slideshare.net/slideshow/reglas-de-inferencia/5364459", content: "Diapositivas sobre las Reglas de Inferencia." }
+    
+        ];
+
+        const seedConclusions = [
+            { id: "con1", title: "Conclusiones Generales", content: "La abstracción lógica representa la infraestructura cognitiva de la programación avanzada. La correcta asimilación y aplicación de los métodos deductivos y el álgebra booleana garantizan soluciones informáticas libres de fallas semánticas." },
+            { id: "con2", title: "Recomendaciones del Equipo", content: "Se sugiere la implementación continua de plataformas digitales interactivas para simular deducción natural estructurada, optimizando de este modo la curva de aprendizaje de las cohortes venideras de ingeniería." }
+        ];
+
+        const seedStories = [
+            { id: "s1", author: "Luis Melgarejo", text: "El mayor reto técnico que afrontamos como informáticos fue balancear la rigurosidad matemática de las demostraciones deductivas con el desarrollo modular del repositorio. Al final, logramos que la lógica abstracta se convirtiera en un sistema funcional." },
+            { id: "s2", author: "Leonardo Moya", text: "La recopilación del trabajo de campo nos permitió comprender que las falacias argumentativas no son simples errores teóricos, sino fallas semánticas reales que los algoritmos de software deben detectar y corregir." }
+        ];
+
+        // Inicializador de LocalStorage Seguro
+        window.onload = function() {
+            if (!localStorage.getItem('db_team')) localStorage.setItem('db_team', JSON.stringify(seedTeam));
+            if (!localStorage.getItem('db_modules')) localStorage.setItem('db_modules', JSON.stringify(seedModules));
+            if (!localStorage.getItem('db_campo')) localStorage.setItem('db_campo', JSON.stringify(seedCampo));
+            if (!localStorage.getItem('db_mediateca')) localStorage.setItem('db_mediateca', JSON.stringify(seedMediateca));
+            if (!localStorage.getItem('db_conclusions')) localStorage.setItem('db_conclusions', JSON.stringify(seedConclusions));
+            if (!localStorage.getItem('db_stories')) localStorage.setItem('db_stories', JSON.stringify(seedStories));
+            
+            if (!localStorage.getItem('db_intro')) {
+                const baseIntro = "La lógica formal representa el núcleo principal del pensamiento computacional y el diseño de algoritmos en la ingeniería contemporánea. Este portafolio digital tiene el proposito general de funcionar como una bitácora científica y un centro de gestión del conocimiento para organizar, analizar y validar las estructuras proposicionales, métodos deductivos y aplicaciones prácticas desarrolladas a lo largo de este subproyecto universitario. A través de este entorno, se vincula la rigurosidad abstracta de los sistemas formales con evidencias empíricas recolectadas directamente durante el proceso de desarollo y ejecucion, en el campo de estudio.";
+                localStorage.setItem('db_intro', baseIntro);
+            }
+            
+            renderAll();
+        };
+
+        // Renderizadores Dinámicos del Sistema
+        function renderAll() {
+            renderIntro();
+            renderTeam();
+            renderModules();
+            renderCampo();
+            renderMediateca();
+            renderConclusions();
+            renderStories();
+            updateAdminUIElements();
+        }
+
+        // Helper de escape contra ataques XSS
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        // Helper para transformar enlaces normales de YouTube en enlaces Embed interactivos
+        function getYoutubeEmbedUrl(url) {
+            if (!url) return '';
+            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            let match = url.match(regExp);
+            if (match && match[2].length === 11) {
+                return 'https://www.youtube.com/embed/' + match[2];
+            }
+            return url;
+        }
+
+        // Renderizadores del Front-End Seguro contra Inyecciones XSS
+        function renderIntro() {
+            const container = document.querySelector('.intro-text');
+            if (!container) return;
+            const currentIntro = localStorage.getItem('db_intro');
+            container.innerHTML = `
+                <div id="intro-display-text" style="white-space: pre-line;">${escapeHTML(currentIntro)}</div>
+                <div class="admin-actions-zone" style="display: ${IsAdminAuthenticated ? 'flex' : 'none'}; justify-content: flex-start; margin-top: 15px;">
+                    <button class="btn btn-secondary btn-crud" onclick="openCrudModal('introducion')">
+                        <i class="fas fa-edit"></i> Editar Introducción
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderTeam() {
+            const container = document.getElementById('team-target');
+            const data = JSON.parse(localStorage.getItem('db_team')) || [];
+            container.innerHTML = data.map(item => {
+                const avatarHTML = item.url 
+                    ? `<img src="${item.url}" alt="${escapeHTML(item.title)}">` 
+                    : `<i class="fas ${item.icon || 'fa-user-gear'}"></i>`;
+                
+                return `
+                    <div class="member-card">
+                        <div class="member-avatar">${avatarHTML}</div>
+                        <h4>${escapeHTML(item.title)}</h4>
+                        <span>${escapeHTML(item.content)}</span>
+                        <div class="admin-actions-zone" style="display: ${IsAdminAuthenticated ? 'flex' : 'none'};">
+                            <button class="btn btn-secondary btn-crud" onclick="openCrudModal('team', '${item.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-danger btn-crud" onclick="deleteItem('db_team', '${item.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderModules() {
+            const container = document.getElementById('modules-target');
+            const data = JSON.parse(localStorage.getItem('db_modules')) || [];
+            container.innerHTML = data.map(item => `
+                <div class="module-card">
+                    <div class="module-header">
+                        <h3 class="module-title">${escapeHTML(item.title)}</h3>
+                    </div>
+                    <div class="module-content">${escapeHTML(item.content)}</div>
+                    <div class="admin-actions-zone" style="display: ${IsAdminAuthenticated ? 'flex' : 'none'};">
+                        <button class="btn btn-secondary btn-crud" onclick="openCrudModal('modulos', '${item.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-crud" onclick="deleteItem('db_modules', '${item.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCampo() {
+            const container = document.getElementById('campo-target');
+            const data = JSON.parse(localStorage.getItem('db_campo')) || [];
+            container.innerHTML = data.map(item => `
+                <div class="gallery-item">
+                    <div class="gallery-img-container">
+                        ${item.url ? `<img src="${item.url}" alt="${escapeHTML(item.title)}">` : `<div class="gallery-img-placeholder"><i class="fas fa-image"></i></div>`}
+                    </div>
+                    <div class="gallery-info">
+                        <h4>${escapeHTML(item.title)}</h4>
+                        <p>${escapeHTML(item.content)}</p>
+                    </div>
+                    <div class="admin-actions-zone" style="display: ${IsAdminAuthenticated ? 'flex' : 'none'}; padding: 0 15px 15px;">
+                        <button class="btn btn-secondary btn-crud" onclick="openCrudModal('campo', '${item.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-crud" onclick="deleteItem('db_campo', '${item.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderMediateca() {
+            const container = document.getElementById('mediateca-target');
+            const data = JSON.parse(localStorage.getItem('db_mediateca')) || [];
+            container.innerHTML = data.map(item => {
+                let iconClass = 'fa-file-lines';
+                let viewerContent = '';
+
+                if (item.type === 'video') {
+                    iconClass = 'fa-video';
+                    let embedUrl = getYoutubeEmbedUrl(item.url);
+                    viewerContent = `<iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                } else if (item.type === 'pdf') {
+                    iconClass = 'fa-file-pdf';
+                    viewerContent = `<div class="media-viewer-placeholder"><i class="fas fa-file-pdf" style="color:#e53e3e;"></i><span>Documento PDF Anexado</span></div>`;
+                } else if (item.type === 'ppt') {
+                    iconClass = 'fa-file-powerpoint';
+                    viewerContent = `<div class="media-viewer-placeholder"><i class="fas fa-file-powerpoint" style="color:#dd6b20;"></i><span>Presentación PowerPoint Anexada</span></div>`;
+                } else if (item.type === 'docx') {
+                    iconClass = 'fa-file-word';
+                    viewerContent = `<div class="media-viewer-placeholder"><i class="fas fa-file-word" style="color:#3182ce;"></i><span>Documento Word Anexado</span></div>`;
+                } else if (item.type === 'xlsx') {
+                    iconClass = 'fa-file-excel';
+                    viewerContent = `<div class="media-viewer-placeholder"><i class="fas fa-file-excel" style="color:#38a169;"></i><span>Hoja de Cálculo Excel Anexada</span></div>`;
+                } else {
+                    iconClass = 'fa-file-lines';
+                    viewerContent = `<div class="media-viewer-placeholder"><i class="fas fa-file-zipper" style="color:#718096;"></i><span>Archivo Ofimático Comercial</span></div>`;
+                }
+
+                return `
+                    <div class="media-card">
+                        <div>
+                            <div class="media-header">
+                                <i class="fas ${iconClass} media-icon"></i>
+                                <h4>${escapeHTML(item.title)}</h4>
+                            </div>
+                            <div class="media-viewer-box">
+                                ${viewerContent}
+                            </div>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">${escapeHTML(item.content)}</p>
+                        </div>
+                        <div>
+                            <div class="media-actions">
+                                <a href="${item.url || '#'}" target="_blank" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Abrir / Descargar</a>
+                            </div>
+                            <div class="admin-actions-zone" style="display: ${IsAdminAuthenticated ? 'flex' : 'none'};">
+                                <button class="btn btn-secondary btn-crud" onclick="openCrudModal('mediateca', '${item.id}')"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger btn-crud" onclick="deleteItem('db_mediateca', '${item.id}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderConclusions() {
+            const container = document.getElementById('conclusiones-target');
+            const data = JSON.parse(localStorage.getItem('db_conclusions')) || [];
+            container.innerHTML = data.map(item => `
+                <div class="conclusion-block">
+                    <h3>${escapeHTML(item.title)}</h3>
+                    <p>${escapeHTML(item.content)}</p>
+                    <div class="admin-actions-zone" style="display: ${IsAdminAuthenticated ? 'flex' : 'none'};">
+                        <button class="btn btn-secondary btn-crud" onclick="openCrudModal('conclusions', '${item.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-crud" onclick="deleteItem('db_conclusions', '${item.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderStories() {
+            const container = document.getElementById('stories-target');
+            const data = JSON.parse(localStorage.getItem('db_stories')) || [];
+            container.innerHTML = data.map(item => `
+                <div class="story-item">
+                    <p>"${escapeHTML(item.text)}"</p>
+                    <strong>- ${escapeHTML(item.author)}</strong>
+                    <div class="admin-actions-zone" style="display: ${IsAdminAuthenticated ? 'flex' : 'none'};">
+                        <button class="btn btn-secondary btn-crud" onclick="openCrudModal('stories', '${item.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-crud" onclick="deleteItem('db_stories', '${item.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateAdminUIElements() {
+            const adminZones = document.querySelectorAll('.admin-actions-zone');
+            adminZones.forEach(zone => {
+                zone.style.display = IsAdminAuthenticated ? 'flex' : 'none';
+            });
+
+            const adminOnlyButtons = document.querySelectorAll('.btn-admin-only');
+            adminOnlyButtons.forEach(btn => {
+                btn.style.display = IsAdminAuthenticated ? 'inline-flex' : 'none';
+            });
+
+            const floatBtn = document.getElementById('admin-trigger-btn');
+            if (floatBtn) {
+                if (IsAdminAuthenticated) {
+                    floatBtn.innerHTML = '<i class="fas fa-unlock"></i> Cerrar Sesión';
+                    floatBtn.style.backgroundColor = 'var(--danger)';
+                } else {
+                    floatBtn.innerHTML = '<i class="fas fa-lock"></i> Acceso Administrador';
+                    floatBtn.style.backgroundColor = 'var(--primary)';
+                }
+            }
+        }
+
+        function toggleAdminView() {
+            if (IsAdminAuthenticated) {
+                IsAdminAuthenticated = false;
+                alert("Sesión administrativa cerrada.");
+                renderAll();
+            } else {
+                document.getElementById('login-modal').style.display = 'flex';
+            }
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function submitLogin() {
+            const pass = document.getElementById('login-pass').value;
+            if (pass === "admin123") {
+                IsAdminAuthenticated = true;
+                closeModal('login-modal');
+                alert("Autenticación exitosa. Modo administrador activado.");
+                document.getElementById('login-user').value = '';
+                document.getElementById('login-pass').value = '';
+                renderAll();
+            } else {
+                alert("Acceso denegado. Contraseña incorrecta.");
+            }
+        }
+
+        function openCrudModal(section, id = null) {
+            const modal = document.getElementById('crud-modal');
+            const form = document.getElementById('crud-form');
+            form.reset();
+            
+            document.getElementById('form-target-section').value = section;
+            document.getElementById('form-item-id').value = id || '';
+            
+            // Configuración básica por defecto de campos
+            document.getElementById('group-title').style.display = 'block';
+            document.getElementById('group-type').style.display = 'none';
+            document.getElementById('group-url').style.display = 'none';
+            document.getElementById('group-image-file').style.display = 'none';
+            document.getElementById('group-content').style.display = 'block';
+            
+            document.getElementById('label-title').innerText = 'Título';
+            document.getElementById('label-content').innerText = 'Contenido / Descripción';
+            document.getElementById('form-title').required = true;
+
+            if (section === 'introducion') {
+                document.getElementById('crud-modal-title').innerText = 'Editar Introducción';
+                document.getElementById('group-title').style.display = 'none';
+                document.getElementById('form-title').required = false;
+                document.getElementById('label-content').innerText = 'Texto Estructurado de la Introducción';
+                document.getElementById('form-content').value = localStorage.getItem('db_intro');
+            } else if (section === 'conclusions') {
+                document.getElementById('crud-modal-title').innerText = id ? 'Editar Conclusión' : 'Añadir Conclusión';
+                if (id) {
+                    const data = JSON.parse(localStorage.getItem('db_conclusions')) || [];
+                    const item = data.find(i => i.id === id);
+                    if (item) {
+                        document.getElementById('form-title').value = item.title;
+                        document.getElementById('form-content').value = item.content;
+                    }
+                }
+            } else if (section === 'mediateca') {
+                document.getElementById('crud-modal-title').innerText = id ? 'Editar Recurso de Mediateca' : 'Añadir Recurso de Mediateca';
+                document.getElementById('group-type').style.display = 'block';
+                document.getElementById('group-url').style.display = 'block';
+                document.getElementById('group-image-file').style.display = 'block';
+                document.getElementById('label-url').innerText = 'Enlace / URL de Recurso (Ej. link de YouTube)';
+                document.getElementById('label-file-input').innerText = 'O anexar un Archivo Físico (.pdf, .docx, .pptx, .xlsx, etc.)';
+                document.getElementById('form-file-input').setAttribute('accept', '.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,image/*');
+                
+                if (id) {
+                    const data = JSON.parse(localStorage.getItem('db_mediateca')) || [];
+                    const item = data.find(i => i.id === id);
+                    if (item) {
+                        document.getElementById('form-title').value = item.title;
+                        document.getElementById('form-type').value = item.type;
+                        document.getElementById('form-url').value = item.url;
+                        document.getElementById('form-content').value = item.content;
+                    }
+                }
+            } else if (section === 'team') {
+                // MODIFICACIÓN EXCLUSIVA: Formulario adaptado exactamente a la captura de pantalla provista
+                document.getElementById('crud-modal-title').innerText = id ? 'EDITAR INTEGRANTE' : 'AÑADIR INTEGRANTE';
+                document.getElementById('label-title').innerText = 'Nombre del Integrante';
+                document.getElementById('group-url').style.display = 'block';
+                document.getElementById('label-url').innerText = 'URL de Imagen Externa (Opcional)';
+                document.getElementById('group-image-file').style.display = 'block';
+                document.getElementById('label-file-input').innerText = 'Adjuntar Archivo de Imagen (PNG, JPG, JPEG)';
+                document.getElementById('form-file-input').setAttribute('accept', 'image/png, image/jpeg, image/jpg');
+                document.getElementById('label-content').innerText = 'Rol o Cargo Técnico';
+
+                if (id) {
+                    const data = JSON.parse(localStorage.getItem('db_team')) || [];
+                    const item = data.find(i => i.id === id);
+                    if (item) {
+                        document.getElementById('form-title').value = item.title;
+                        document.getElementById('form-url').value = item.url || '';
+                        document.getElementById('form-content').value = item.content;
+                    }
+                }
+            } else if (section === 'modulos') {
+                document.getElementById('crud-modal-title').innerText = id ? 'Editar Módulo' : 'Añadir Módulo';
+                document.getElementById('label-title').innerText = 'Título del Módulo';
+                if (id) {
+                    const data = JSON.parse(localStorage.getItem('db_modules')) || [];
+                    const item = data.find(i => i.id === id);
+                    if (item) {
+                        document.getElementById('form-title').value = item.title;
+                        document.getElementById('form-content').value = item.content;
+                    }
+                }
+            } else if (section === 'campo') {
+                document.getElementById('crud-modal-title').innerText = id ? 'Editar Anexo de Campo' : 'Añadir Anexo de Campo';
+                document.getElementById('group-url').style.display = 'block';
+                document.getElementById('group-image-file').style.display = 'block';
+                document.getElementById('label-url').innerText = 'URL de la Imagen';
+                document.getElementById('form-file-input').setAttribute('accept', 'image/*');
+                if (id) {
+                    const data = JSON.parse(localStorage.getItem('db_campo')) || [];
+                    const item = data.find(i => i.id === id);
+                    if (item) {
+                        document.getElementById('form-title').value = item.title;
+                        document.getElementById('form-url').value = item.url;
+                        document.getElementById('form-content').value = item.content;
+                    }
+                }
+            } else if (section === 'stories') {
+                document.getElementById('crud-modal-title').innerText = id ? 'Editar Relato' : 'Añadir Relato';
+                document.getElementById('label-title').innerText = 'Autor del Relato';
+                document.getElementById('label-content').innerText = 'Texto de la Experiencia';
+                if (id) {
+                    const data = JSON.parse(localStorage.getItem('db_stories')) || [];
+                    const item = data.find(i => i.id === id);
+                    if (item) {
+                        document.getElementById('form-title').value = item.author;
+                        document.getElementById('form-content').value = item.text;
+                    }
+                }
+            }
+            modal.style.display = 'flex';
+        }
+
+        function saveDataItem(event) {
+            event.preventDefault();
+            const section = document.getElementById('form-target-section').value;
+            const id = document.getElementById('form-item-id').value;
+            const title = document.getElementById('form-title').value;
+            let url = document.getElementById('form-url').value;
+            const content = document.getElementById('form-content').value;
+            const type = document.getElementById('form-type').value;
+            const fileInput = document.getElementById('form-file-input');
+
+            const proceedWithSave = (finalUrl) => {
+                if (section === 'introducion') {
+                    localStorage.setItem('db_intro', content);
+                } else {
+                    let dbKey = '';
+                    if (section === 'team') dbKey = 'db_team';
+                    else if (section === 'modulos') dbKey = 'db_modules';
+                    else if (section === 'campo') dbKey = 'db_campo';
+                    else if (section === 'mediateca') dbKey = 'db_mediateca';
+                    else if (section === 'conclusions') dbKey = 'db_conclusions';
+                    else if (section === 'stories') dbKey = 'db_stories';
+
+                    let data = JSON.parse(localStorage.getItem(dbKey)) || [];
+
+                    if (id) {
+                        data = data.map(item => {
+                            if (item.id === id) {
+                                if (section === 'stories') {
+                                    return { id: item.id, author: title, text: content };
+                                } else if (section === 'mediateca') {
+                                    return { id: item.id, title, type, url: finalUrl || item.url, content };
+                                } else {
+                                    return { id: item.id, title, url: finalUrl || item.url, content, icon: item.icon };
+                                }
+                            }
+                            return item;
+                        });
+                    } else {
+                        const newId = 'item_' + Date.now();
+                        let newItem = {};
+                        if (section === 'stories') {
+                            newItem = { id: newId, author: title, text: content };
+                        } else if (section === 'mediateca') {
+                            newItem = { id: newId, title, type, url: finalUrl, content };
+                        } else {
+                            newItem = { id: newId, title, url: finalUrl, content, icon: section === 'team' ? 'fa-user-gear' : '' };
+                        }
+                        data.push(newItem);
+                    }
+                    localStorage.setItem(dbKey, JSON.stringify(data));
+                }
+                closeModal('crud-modal');
+                renderAll();
+            };
+
+            // Conversión nativa y persistente a DataURL para anexar cualquier archivo físico ofimático localmente
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    proceedWithSave(e.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                proceedWithSave(url);
+            }
+        }
+
+        function deleteItem(dbKey, id) {
+            if (confirm("¿Está seguro de que desea eliminar permanentemente este elemento científico del registro?")) {
+                let data = JSON.parse(localStorage.getItem(dbKey)) || [];
+                data = data.filter(item => item.id !== id);
+                localStorage.setItem(dbKey, JSON.stringify(data));
+                renderAll();
+            }
+        }
+    </script>
+</body>
+</html>
