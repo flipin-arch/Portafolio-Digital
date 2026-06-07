@@ -405,24 +405,63 @@
             gap: 20px;
         }
 
-        .story-item {
+        /* ── NUEVO: tarjeta de video para StoryTime ── */
+        .story-video-card {
             background: var(--bg-card);
             border-left: 4px solid var(--primary-light);
-            padding: 20px;
             border-radius: 0 6px 6px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            overflow: hidden;
             position: relative;
         }
 
-        .story-item p {
-            font-style: italic;
-            color: var(--text-muted);
-            margin-bottom: 10px;
+        .story-video-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px 10px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .story-item strong {
+        .story-video-header i {
+            color: #e53e3e;
+            font-size: 1.3rem;
+        }
+
+        .story-video-header h4 {
             color: var(--primary);
-            font-size: 0.95rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .story-video-embed {
+            width: 100%;
+            height: 340px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .story-video-embed iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .story-video-footer {
+            padding: 10px 18px 14px;
+        }
+
+        .story-video-footer p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        /* Botón de acción en tarjeta de story */
+        .story-video-card .admin-actions-zone {
+            padding: 0 18px 12px;
         }
 
         /* Botones del Sistema */
@@ -690,7 +729,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                     <h2 class="section-title" style="margin-bottom: 0;">StoryTimes</h2>
                     <button class="btn btn-success btn-admin-only" onclick="openCrudModal('stories')" style="display: none;">
-                        <i class="fas fa-plus"></i> Añadir Relato
+                        <i class="fas fa-plus"></i> Añadir Video
                     </button>
                 </div>
                 <div id="stories-target" class="stories-container">
@@ -814,7 +853,6 @@
             { id: "med2", title: "Curso Gratuito en Youtube", type: "video", url: "https://www.youtube.com/watch?v=vKe0UKSpNQQ&list=PLeySRPnY35dHBYcVHPisjBCVHBa954rMZ", content: "Video explicativo sobre la Lógica Proposicional." },
             { id: "med3", title: "Reglas de Inferencia Lógicas", type: "ppt", url: "https://es.slideshare.net/slideshow/reglas-de-inferencia/5364459", content: "Diapositivas sobre las Reglas de Inferencia." },
             { id: "med4", title: "Simplificación de Proposiciones Lógicas", type: "video", url: "https://www.youtube.com/watch?v=OHLBIk-TumI&t=1s", content: "Material Adicional" } 
-    
         ];
 
         const seedConclusions = [
@@ -822,9 +860,10 @@
             { id: "con2", title: "Recomendaciones del Equipo", content: "Se sugiere la implementación continua de plataformas digitales interactivas para simular deducción natural estructurada, optimizando de este modo la curva de aprendizaje de las cohortes venideras de ingeniería." }
         ];
 
+        // ── MODIFICADO: seedStories ahora almacena videos de YouTube, sin textos ──
         const seedStories = [
-            { id: "s1", author: "Luis Melgarejo", text: "El mayor reto técnico que afrontamos como informáticos fue balancear la rigurosidad matemática de las demostraciones deductivas con el desarrollo modular del repositorio. Al final, logramos que la lógica abstracta se convirtiera en un sistema funcional." },
-            { id: "s2", author: "Leonardo Moya", text: "La recopilación del trabajo de campo nos permitió comprender que las falacias argumentativas no son simples errores teóricos, sino fallas semánticas reales que los algoritmos de software deben detectar y corregir." }
+            { id: "s1", title: "StoryTime — Video 1", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", content: "Primer video del StoryTime." },
+            { id: "s2", title: "StoryTime — Video 2", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", content: "Segundo video del StoryTime." }
         ];
 
         // Inicializador de LocalStorage Seguro
@@ -834,7 +873,11 @@
             if (!localStorage.getItem('db_campo')) localStorage.setItem('db_campo', JSON.stringify(seedCampo));
             if (!localStorage.getItem('db_mediateca')) localStorage.setItem('db_mediateca', JSON.stringify(seedMediateca));
             if (!localStorage.getItem('db_conclusions')) localStorage.setItem('db_conclusions', JSON.stringify(seedConclusions));
-            if (!localStorage.getItem('db_stories')) localStorage.setItem('db_stories', JSON.stringify(seedStories));
+            // ── MODIFICADO: forzar reset del seedStories al nuevo formato de videos ──
+            if (!localStorage.getItem('db_stories_v2')) {
+                localStorage.setItem('db_stories', JSON.stringify(seedStories));
+                localStorage.setItem('db_stories_v2', '1');
+            }
             
             if (!localStorage.getItem('db_intro')) {
                 const baseIntro = "La lógica formal representa el núcleo principal del pensamiento computacional y el diseño de algoritmos en la ingeniería contemporánea. Este portafolio digital tiene el proposito general de funcionar como una bitácora científica y un centro de gestión del conocimiento para organizar, analizar y validar las estructuras proposicionales, métodos deductivos y aplicaciones prácticas desarrolladas a lo largo de este subproyecto universitario. A través de este entorno, se vincula la rigurosidad abstracta de los sistemas formales con evidencias empíricas recolectadas directamente durante el proceso de desarollo y ejecucion, en el campo de estudio.";
@@ -1016,19 +1059,33 @@
             `).join('');
         }
 
+        // ── MODIFICADO: renderStories ahora muestra reproductores de YouTube embebidos ──
         function renderStories() {
             const container = document.getElementById('stories-target');
             const data = JSON.parse(localStorage.getItem('db_stories')) || [];
-            container.innerHTML = data.map(item => `
-                <div class="story-item">
-                    <p>"${escapeHTML(item.text)}"</p>
-                    <strong>- ${escapeHTML(item.author)}</strong>
-                    <div class="admin-actions-zone" style="display: ${IsAdminAuthenticated ? 'flex' : 'none'};">
-                        <button class="btn btn-secondary btn-crud" onclick="openCrudModal('stories', '${item.id}')"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger btn-crud" onclick="deleteItem('db_stories', '${item.id}')"><i class="fas fa-trash"></i></button>
+            container.innerHTML = data.map(item => {
+                const embedUrl = getYoutubeEmbedUrl(item.url);
+                return `
+                    <div class="story-video-card">
+                        <div class="story-video-header">
+                            <i class="fab fa-youtube"></i>
+                            <h4>${escapeHTML(item.title)}</h4>
+                        </div>
+                        <div class="story-video-embed">
+                            <iframe
+                                src="${embedUrl}"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        ${item.content ? `<div class="story-video-footer"><p>${escapeHTML(item.content)}</p></div>` : ''}
+                        <div class="admin-actions-zone" style="display: ${IsAdminAuthenticated ? 'flex' : 'none'};">
+                            <button class="btn btn-secondary btn-crud" onclick="openCrudModal('stories', '${item.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-danger btn-crud" onclick="deleteItem('db_stories', '${item.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function updateAdminUIElements() {
@@ -1137,7 +1194,6 @@
                     }
                 }
             } else if (section === 'team') {
-                // MODIFICACIÓN EXCLUSIVA: Formulario adaptado exactamente a la captura de pantalla provista
                 document.getElementById('crud-modal-title').innerText = id ? 'EDITAR INTEGRANTE' : 'AÑADIR INTEGRANTE';
                 document.getElementById('label-title').innerText = 'Nombre del Integrante';
                 document.getElementById('group-url').style.display = 'block';
@@ -1182,16 +1238,22 @@
                         document.getElementById('form-content').value = item.content;
                     }
                 }
+            // ── MODIFICADO: formulario de stories ahora captura título, URL de YouTube y descripción ──
             } else if (section === 'stories') {
-                document.getElementById('crud-modal-title').innerText = id ? 'Editar Relato' : 'Añadir Relato';
-                document.getElementById('label-title').innerText = 'Autor del Relato';
-                document.getElementById('label-content').innerText = 'Texto de la Experiencia';
+                document.getElementById('crud-modal-title').innerText = id ? 'Editar Video de StoryTime' : 'Añadir Video de StoryTime';
+                document.getElementById('label-title').innerText = 'Título del Video';
+                document.getElementById('group-url').style.display = 'block';
+                document.getElementById('label-url').innerText = 'Enlace de YouTube (URL del video)';
+                document.getElementById('label-content').innerText = 'Descripción o Nota del Video (Opcional)';
+                document.getElementById('form-content').required = false;
+
                 if (id) {
                     const data = JSON.parse(localStorage.getItem('db_stories')) || [];
                     const item = data.find(i => i.id === id);
                     if (item) {
-                        document.getElementById('form-title').value = item.author;
-                        document.getElementById('form-content').value = item.text;
+                        document.getElementById('form-title').value = item.title;
+                        document.getElementById('form-url').value = item.url;
+                        document.getElementById('form-content').value = item.content || '';
                     }
                 }
             }
@@ -1225,8 +1287,9 @@
                     if (id) {
                         data = data.map(item => {
                             if (item.id === id) {
+                                // ── MODIFICADO: stories guarda título, url y content (sin author/text) ──
                                 if (section === 'stories') {
-                                    return { id: item.id, author: title, text: content };
+                                    return { id: item.id, title, url: finalUrl || item.url, content };
                                 } else if (section === 'mediateca') {
                                     return { id: item.id, title, type, url: finalUrl || item.url, content };
                                 } else {
@@ -1238,8 +1301,9 @@
                     } else {
                         const newId = 'item_' + Date.now();
                         let newItem = {};
+                        // ── MODIFICADO: new stories guarda título, url y content ──
                         if (section === 'stories') {
-                            newItem = { id: newId, author: title, text: content };
+                            newItem = { id: newId, title, url: finalUrl, content };
                         } else if (section === 'mediateca') {
                             newItem = { id: newId, title, type, url: finalUrl, content };
                         } else {
